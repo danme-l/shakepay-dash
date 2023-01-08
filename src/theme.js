@@ -20,6 +20,9 @@ export const theme = createTheme({
             main: '#9c27b0',
             light: '#ba68c8',
             dark: '#7b1fa2'
+        },
+        secondary: {
+          main: '#F2A900'
         }
     }
   });

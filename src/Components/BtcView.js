@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import { LineChart, XAxis, YAxis, Line, Tooltip, Cross, ReferenceDot, ResponsiveContainer } from 'recharts';
 import { Typography } from '@mui/material';
 import { Paper } from '@mui/material';
 import priceData from '../static/data/btc_eth_cadRate.json';
-import moment from 'moment';
-import { theme } from '../theme';
+import { Box } from '@mui/system';
+import { Grid } from '@mui/material'
+import { CryptoBuyTable } from './CryptoBuyTable';
+import { CryptoBuyChart } from './CryptoBuyChart';
+import { CryptoCashoutTable } from './CryptoCashoutTable';
 
-
-export const BtcView = ( {btcBuys} ) => {
+export const BtcView = ( {btcBuys, btcCashouts} ) => {
     const [firstBuy, setFirstBuy] = useState(btcBuys[0]['Date'].slice(0,10));
     const [data, setData] = useState([]);
     const [mouseOverDot, setMouseOverDot] = useState(false);
+    const [highlight, setHighlight] = useState(-1);
 
     useEffect(() => {
         // use data only from 1 month before the user's first buy
@@ -20,79 +22,36 @@ export const BtcView = ( {btcBuys} ) => {
         setData(sortedData.filter(d => new Date(d.Date) > fb));
     }, []);
 
-    const highlightBuy = () => {
+    const highlightBuy = (i) => {
+        highlight !== i ? setHighlight(i) : setHighlight(-1);
         return;
     }
-
-    const CustomTooltip = ({ active, payload}) => {
-        if (active && payload) {
-            return (
-                <Paper elevation={4} sx={{padding: 1}}>
-                    <Typography variant='body1'>{moment(payload[0].payload['Date']).format('MMM DD, YYYY')}</Typography>
-                    <Typography variant='body1'>${payload[0].payload['BTC'].toFixed(2)}</Typography>
-                </Paper>
-            )
-        };
-        return null;        
-      }
-  
+ 
     return (
-        <div>
-            <LineChart width={1000} height={700} data={data} margin={{ top: 50, right: 30, left: 30, bottom: 30}}>
-                <Tooltip content={CustomTooltip}/>
-                <XAxis
-                    dataKey = 'Date'   
-                    domain = {['dataMin', 'dataMax']}
-                    angle={45} tickCount={25} tickMargin={20}
-                    tickFormatter = {(unixTime) => moment(unixTime).format('DD-MM-YYYY')}
-                    type = 'number'
-                    style={{
-                        fontSize: '0.9em',
-                        fontFamily: theme.typography.fontFamily
-                    }}
-                    label={{ 
-                        value: 'Date', 
-                        position: 'insideBottomRight', 
-                        offset: 40,
-                        fontFamily: theme.typography.fontFamily }}
-                />
-                <YAxis
-                    tickCount={16} 
-                    label={{ 
-                        value: 'Exchange Rate, CAD', 
-                        angle: -90, 
-                        position: 'insideLeft', 
-                        offset: -10,
-                        fontFamily:theme.typography.fontFamily }}
-                    style={{
-                        fontSize: '0.9em',
-                        fontFamily: theme.typography.fontFamily
-                    }}
-                />
-                <Line type={"monotone"} dataKey="BTC" />
-
-                {/* TODO
-                Currently trying to figure out how to make these reference dots work 
-                such that only one will expand when you mouse over it
-                */}
-                {/* Mark each of the user's buys on the price time series */}
-                {btcBuys.map((d,i) => {
-                    const v = Object.values(d);
-                    return (
-                        <ReferenceDot 
-                            key={i} 
-                            x={new Date(v[1].slice(0,10)).getTime()} 
-                            y={v[6]}
-                            r={mouseOverDot ? 8 : 4}
-                            onMouseOver={(e) => setMouseOverDot(true)}
-                            onMouseLeave={(e) => setMouseOverDot(false)}
-                            onClick={highlightBuy()}
-                            fill={theme.palette.primary.dark}
-                            />
-                    )
-                })}
-                
-            </LineChart>
-        </div>
+        <Box  sx={{ flexGrow: 1, margin: 4 }}>
+            <Grid container spacing={5} direction="row" justifyContent={'space-evenly'}>
+                <Grid item xs={12}>
+                    <Typography variant='h1' >Bitcoin</Typography>
+                </Grid>
+                <Grid item xs={7}>
+                    {/* TODO implement skip to the right table page on chart ref dot click */}
+                    <CryptoBuyChart 
+                        priceData={data} 
+                        buysData={btcBuys} 
+                        mouseOverDot={mouseOverDot} 
+                        setMouseOverDot={setMouseOverDot}
+                        highlightBuy={highlightBuy}
+                        btcOrEth='btc' />
+                </Grid>
+                <Grid item xs={5}>
+                    <Typography variant='h4'>BTC Buys</Typography>
+                    <CryptoBuyTable data={btcBuys} highlight={highlight} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant='h4'>BTC Cashouts to Wallet</Typography>
+                    <CryptoCashoutTable data={btcCashouts} highlight={highlight} btcOrEth='btc' />
+                </Grid>
+            </Grid>          
+        </Box>
     )
-}
+};

@@ -20,6 +20,8 @@ function App() {
     const [purchaseTotal, setPurchaseTotal] = useState(0);
     const [btcBuys, setBtcBuys] = useState([]);
     const [ethBuys, setEthBuys] = useState([]);
+	const [btcCashouts, setBtcCashouts] = useState([]);
+    const [ethCashouts, setEthCashouts] = useState([]);
     const [cardPurchases, setCardPurchases] = useState([]);
     const [cardCashbacks, setCardCashbacks] = useState([]);
     const [spEarn, setSpEarn] = useState([]); 
@@ -30,6 +32,8 @@ function App() {
 			setPurchaseTotal(parsedData.filter(d => d.Direction === 'purchase').reduce((t, d) => parseFloat(d["Amount Debited"]) + t, 0));
 			setBtcBuys(parsedData.filter(d => d.Direction === 'purchase').filter(d => d['Credit Currency'] === 'BTC'));
 			setEthBuys(parsedData.filter(d => d.Direction === 'purchase').filter(d => d['Credit Currency'] === 'ETH'));
+			setBtcCashouts(parsedData.filter(d => d['Transaction Type'] === 'crypto cashout').filter(d => d['Debit Currency'] === 'BTC'));
+			setEthCashouts(parsedData.filter(d => d['Transaction Type'] === 'crypto cashout').filter(d => d['Debit Currency'] === 'ETH'));
 			setCardPurchases(parsedData.filter(d => d['Transaction Type'] === 'card transactions'))
 			setCardCashbacks(parsedData.filter(d => d['Transaction Type'] === 'card cashbacks'))
 			setSpEarn(parsedData.filter(d => d['Transaction Type'] === 'shakepay earn'));
@@ -53,8 +57,8 @@ function App() {
 																		cardPurchases={cardPurchases} cardCashbacks={cardCashbacks} spEarn={spEarn} /> } />
 						<Route name='table' path='/table' element={<SPTable tableRows={tableRows} values={values} />} />
 						<Route name='about' path='/about' element={<About />} />
-						<Route name='btc' path='/btc' element={<BtcView btcBuys={btcBuys}/>} />
-						<Route name='eth' path='/eth' element={<PageInProgress />} />
+						<Route name='btc' path='/btc' element={<BtcView btcBuys={btcBuys} btcCashouts={btcCashouts} />} />
+						<Route name='eth' path='/eth' element={<EthView ethBuys={ethBuys} ethCashouts={ethCashouts} />} />
               			<Route name="error" path="*" element={<Err404 />} /> 
 					</Routes>
 				}
