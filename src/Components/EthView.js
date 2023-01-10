@@ -3,6 +3,9 @@ import { Typography } from '@mui/material';
 import { Paper } from '@mui/material';
 import priceData from '../static/data/btc_eth_cadRate.json';
 import { Box } from '@mui/system';
+import { Link } from '@mui/material';
+import { BsFillArrowRightCircleFill } from 'react-icons/bs';
+import { FaEthereum } from 'react-icons/fa';
 import { Grid } from '@mui/material'
 import { CryptoBuyTable } from './CryptoBuyTable';
 import { CryptoBuyChart } from './CryptoBuyChart';
@@ -30,8 +33,30 @@ export const EthView = ( {ethBuys, ethCashouts} ) => {
     return (
         <Box  sx={{ flexGrow: 1, margin: 4 }}>
             <Grid container spacing={5} direction="row" justifyContent={'space-evenly'}>
-                <Grid item xs={12}>
-                    <Typography variant='h1' >Ether</Typography>
+                <Grid item xs={6}>
+                    <Typography variant='h1' >Ether <FaEthereum /> </Typography>
+                </Grid>
+                <Grid item xs={4} margin={1}>
+                    <Paper elevation={3} sx={{padding:3}} >
+                        <Typography variant='body1'>
+                            Ethereum is a decentralized, open-source blockchain with smart contract functionality. 
+                            Ether is the native cryptocurrency of the platform. 
+                            Among cryptocurrencies, ether is second only to bitcoin in market capitalization. 
+                            Ethereum was conceived in 2013 by programmer Vitalik Buterin.
+                        </Typography>
+                        <ul>
+                            <li>
+                                <Link href='ethereum.org' target="_blank" rel="noreferrer">
+                                    <Typography variant='body1'>ethereum.org <BsFillArrowRightCircleFill /> </Typography>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href='https://ethereum.org/en/whitepaper/' target="_blank" rel="noreferrer">
+                                    <Typography variant='body1'>Whitepaper <BsFillArrowRightCircleFill /> </Typography>
+                                </Link>
+                            </li>
+                        </ul>
+                    </Paper>
                 </Grid>
                 <Grid item xs={7}>
                     {/* TODO implement skip to the right table page on chart ref dot click */}

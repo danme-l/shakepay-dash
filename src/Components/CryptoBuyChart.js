@@ -20,6 +20,9 @@ const CustomTooltip = ({ active, payload, btcOrEth}) => {
     return null;        
   }
 
+  // chart that overlays the user's purchase of btc/eth to the price 
+  // user can click on the reference dot of their purchase and highlight 
+  // it on their purchase table ( <CryptoBuyTable /> component)
 export const CryptoBuyChart = ({ priceData, buysData, mouseOverDot, setMouseOverDot, highlightBuy, btcOrEth}) => {
     return (
         <ResponsiveContainer width={'99%'} height={600}>
@@ -59,7 +62,7 @@ export const CryptoBuyChart = ({ priceData, buysData, mouseOverDot, setMouseOver
                     : btcOrEth === 'eth' ? <Line type={"monotone"} dataKey="ETH" /> : 0}
 
                 {/* TODO
-                Currently trying to figure out how to make these reference dots work 
+                Figure out how to make these reference dots work 
                 such that only one will expand when you mouse over it
                 */}
                 {/* Mark each of the user's buys on the price time series */}
