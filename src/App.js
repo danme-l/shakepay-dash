@@ -55,7 +55,7 @@ function App() {
 																		userData={parsedData} purchaseData={purchaseData} purchaseTotal={purchaseTotal}
 																		btcBuys={btcBuys} ethBuys={ethBuys}
 																		cardPurchases={cardPurchases} cardCashbacks={cardCashbacks} spEarn={spEarn} /> } />
-						<Route name='table' path='/table' element={<SPTable tableRows={tableRows} values={values} />} />
+						<Route name='table' path='/table' element={<SPTable data={parsedData} tableRows={tableRows} values={values} />} />
 						<Route name='about' path='/about' element={<About />} />
 						<Route name='btc' path='/btc' element={<BtcView btcBuys={btcBuys} btcCashouts={btcCashouts} />} />
 						<Route name='eth' path='/eth' element={<EthView ethBuys={ethBuys} ethCashouts={ethCashouts} />} />
