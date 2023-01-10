@@ -25,7 +25,7 @@ export const Landing = ({ userData, purchaseData, purchaseTotal, btcBuys, ethBuy
                         alignItems="stretch">
                     {/* GRID UPPER ROW */}
                     <Grid item xs={6}>
-                        <StyPaper><Typography variant='h5'>You have conve rted ${purchaseTotal} from Fiat to Bitcoin and Ethereum on Shakepay</Typography></StyPaper>
+                        <StyPaper><Typography variant='h5'>You have converted ${purchaseTotal} from Fiat to Bitcoin and Ethereum on Shakepay</Typography></StyPaper>
                     </Grid>
                     <Grid item xs={3}> 
                         {/* BTC Box */}

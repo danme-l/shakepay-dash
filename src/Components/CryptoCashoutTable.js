@@ -83,7 +83,7 @@ function createData(i, date, debitCur, debitAm, spot, destination, blockchainId)
   return {i, date, debitCur, debitAm, spot, destination, blockchainId };
 }
 
-export const CryptoCashoutTable = ( { data, highlight, btcOrEth }) => {
+export const CryptoCashoutTable = ( { data, btcOrEth }) => {
     const theme = useTheme();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -134,7 +134,7 @@ export const CryptoCashoutTable = ( { data, highlight, btcOrEth }) => {
                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : rows
             ).map((row, i) => (
-                <TableRow key={row.date} sx={{ bgcolor: () => (row.i == highlight) ? theme.palette.secondary.main : null }}>
+                <TableRow key={row.date} >
                     <TableCell component="th" scope="row">
                         {row.date.slice(0,10)}
                     </TableCell>

@@ -12,7 +12,7 @@ const CustomTooltip = ({ active, payload, btcOrEth}) => {
                 <Typography variant='body1'>{moment(payload[0].payload['Date']).format('MMM DD, YYYY')}</Typography>
                 {btcOrEth === 'btc' 
                     ? <Typography variant='body1'>${payload[0].payload['BTC'].toFixed(2)}</Typography> 
-                    : btcOrEth === 'btc' ? <Typography variant='body1'>${payload[0].payload['ETH'].toFixed(2)}</Typography> : 0}
+                    : btcOrEth === 'eth' ? <Typography variant='body1'>${payload[0].payload['ETH'].toFixed(2)}</Typography> : 0}
                 
             </Paper>
         )
@@ -20,7 +20,6 @@ const CustomTooltip = ({ active, payload, btcOrEth}) => {
     return null;        
   }
 
-//   TODO Eth chart is not working for some reason - think it's to do with the Y Axis
 export const CryptoBuyChart = ({ priceData, buysData, mouseOverDot, setMouseOverDot, highlightBuy, btcOrEth}) => {
     return (
         <ResponsiveContainer width={'99%'} height={600}>
@@ -54,11 +53,10 @@ export const CryptoBuyChart = ({ priceData, buysData, mouseOverDot, setMouseOver
                         fontSize: '0.9em',
                         fontFamily: theme.typography.fontFamily
                     }}
-                    domain = {['dataMin', 'dataMax']}
                 />
                 {btcOrEth === 'btc' 
                     ? <Line type={"monotone"} dataKey="BTC" />
-                    : btcOrEth === 'btc' ? <Line type={"monotone"} dataKey="ETH" /> : 0}
+                    : btcOrEth === 'eth' ? <Line type={"monotone"} dataKey="ETH" /> : 0}
 
                 {/* TODO
                 Currently trying to figure out how to make these reference dots work 
