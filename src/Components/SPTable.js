@@ -1,12 +1,16 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import { Box } from '@mui/system';
 import { DataGrid } from '@mui/x-data-grid';
+import { TransModal } from './TransModal';
 
 function createData(id, transType, date, debitAm, debitCur, creditAm, creditCur, buyRate, dir, spotRate, sourceDest, blockchainID) {
     date = date.slice(0,10); // fix the date
     if (spotRate) {
         spotRate = "$" + parseFloat(spotRate).toFixed(2);
-    }    
+    };
+    if (buyRate) {
+        buyRate = "$" + parseFloat(buyRate).toFixed(2);
+    };  
     return {id, transType, date, debitAm, debitCur, creditAm, creditCur, buyRate, dir, spotRate, sourceDest, blockchainID };
   }
 
@@ -24,11 +28,13 @@ const columns = [
     {
         field: "date",
         headerName: "Date",
+        type: 'date',
         width: 100,
     },
     {
         field: "debitAm",
         headerName: "Amount Debited",
+        type: 'number',
         width: 150,
     },
     {
@@ -39,6 +45,7 @@ const columns = [
     {
         field: "creditAm",
         headerName: "Amount Credited",
+        type: 'number',
         width: 150,
     },
     {
@@ -49,6 +56,7 @@ const columns = [
     {
         field: "buyRate",
         headerName: "Buy / Sell Rate",
+        type: 'number',
         width: 150,
     },
     {
@@ -59,6 +67,7 @@ const columns = [
     {
         field: "spotRate",
         headerName: "Spot Rate",
+        type: 'number',
         width: 100,
     },
     {
@@ -76,8 +85,16 @@ const columns = [
 ]
 
 export const SPTable = ({ data }) => {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleModalOpen = (trans) => {
+        setModalContent(trans);
+        setModalOpen(true)
+    };
+    const handleModalClose = () => setModalOpen(false);
 
     // create data
     const rows = [];
@@ -93,6 +110,13 @@ export const SPTable = ({ data }) => {
 
     return (
         <Box sx={{ height: 150+60*rowsPerPage, width: '100%' }}>
+            <TransModal 
+                modalOpen={modalOpen}
+                handleModalClose={handleModalClose}
+                handleModalOpen={handleModalOpen}
+                modalContent={modalContent}
+                setModalContent={setModalContent}
+            />
             <DataGrid
                 rows={rows} rowHeight={60}
                 columns={columns}
@@ -100,6 +124,7 @@ export const SPTable = ({ data }) => {
                 pageSize={rowsPerPage}
                 onPageSizeChange={(e) => handleChangeRowsPerPage(e)}
                 rowsPerPageOptions={[5,10,15]}
+                onRowClick={(e) => handleModalOpen(e.row)}
             />
         </Box>
     )
