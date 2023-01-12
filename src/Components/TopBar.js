@@ -45,9 +45,10 @@ export const NavBar = () => {
                           }}>
                         <MenuItem onClick={handleClose}><Link to='/'>Home</Link></MenuItem>
                         <MenuItem onClick={handleClose}><Link to='/table'>Table</Link></MenuItem>
-                        <MenuItem onClick={handleClose}><Link to='/about'>About</Link></MenuItem>
                         <MenuItem onClick={handleClose}><Link to='/btc'>Bitcoin</Link></MenuItem>
                         <MenuItem onClick={handleClose}><Link to='/eth'>Ether</Link></MenuItem>
+                        <MenuItem onClick={handleClose}><Link to='/rewards'>Card & Earn</Link></MenuItem>
+                        <MenuItem onClick={handleClose}><Link to='/about'>About</Link></MenuItem>
                     </Menu>
                     <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
                         Shakepay Dashboard
