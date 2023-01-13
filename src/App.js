@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { SPTable } from './Components/SPTable';
+import { CustomDataGrid } from './Components/CustomDataGrid';
 import { NavBar } from './Components/TopBar';
 import { About } from './Components/About';
 import { FileInput } from './Components/FileInput';
@@ -64,7 +64,7 @@ function App() {
 																		userData={parsedData} purchaseData={purchaseData} purchaseTotal={purchaseTotal}
 																		btcBuys={btcBuys} ethBuys={ethBuys}
 																		cardPurchases={cardPurchases} cardCashbacks={cardCashbacks} spEarn={spEarn} /> } />
-						<Route name='table' path='/table' element={<SPTable data={parsedData} tableRows={tableRows} values={values} />} />
+						<Route name='table' path='/table' element={<CustomDataGrid data={parsedData} tableRows={tableRows} values={values} />} />
 						<Route name='btc' path='/btc' element={<BtcView btcBuys={btcBuys} btcCashouts={btcCashouts} />} />
 						<Route name='eth' path='/eth' element={<EthView ethBuys={ethBuys} ethCashouts={ethCashouts} />} />
 						<Route name='about' path='/about' element={<About />} />

@@ -43,12 +43,12 @@ export const NavBar = () => {
                         MenuListProps={{
                             'aria-labelledby': 'basic-button',
                           }}>
-                        <MenuItem onClick={handleClose}><Link to='/'>Home</Link></MenuItem>
-                        <MenuItem onClick={handleClose}><Link to='/table'>Table</Link></MenuItem>
-                        <MenuItem onClick={handleClose}><Link to='/btc'>Bitcoin</Link></MenuItem>
-                        <MenuItem onClick={handleClose}><Link to='/eth'>Ether</Link></MenuItem>
-                        <MenuItem onClick={handleClose}><Link to='/rewards'>Card & Earn</Link></MenuItem>
-                        <MenuItem onClick={handleClose}><Link to='/about'>About</Link></MenuItem>
+                        <Link to='/'><MenuItem onClick={handleClose}>Home</MenuItem></Link>
+                        <Link to='/table'><MenuItem onClick={handleClose}>Table</MenuItem></Link>
+                        <Link to='/btc'><MenuItem onClick={handleClose}>Bitcoin</MenuItem></Link>
+                        <Link to='/eth'><MenuItem onClick={handleClose}>Ether</MenuItem></Link>
+                        <Link to='/rewards'><MenuItem onClick={handleClose}>Card & Earn</MenuItem></Link>
+                        <Link to='/about'><MenuItem onClick={handleClose}>About</MenuItem></Link>
                     </Menu>
                     <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
                         Shakepay Dashboard

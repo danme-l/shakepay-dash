@@ -84,7 +84,7 @@ const columns = [
     }
 ]
 
-export const SPTable = ({ data }) => {
+export const CustomDataGrid = ({ data }) => {
     const [page, setPage] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState(null);

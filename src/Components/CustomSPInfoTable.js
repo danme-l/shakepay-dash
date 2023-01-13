@@ -13,23 +13,29 @@ import { TablePaginationActions } from './Utils/TablePaginationActions';
 
 
 // this table and <TablePaginationActions /> are more or less lifted directly from the mui examples
-function createData(i, date,  debitAm, dest) {
-  return {i, date,  debitAm, dest };
-}
-
-export const CardPurchaseTable = ({ data, highlight }) => {
+export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices }) => {
     const theme = useTheme();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    function createData(i, fields) {
+        //console.log(Object.keys(fields))
+        return {i, ...Object.keys(fields)};
+    }
 
     // create data
     const rows = [];
     data.map((d,i) => {
         const v = Object.values(d);
-        // console.log(v);
-        rows.push(createData(i, v[1],v[2],v[9]))
+        const row = {};
+        fieldIndices.forEach((val, ind) => {
+            row[fieldHeaders[ind]] = v[val]
+        });
+        rows.push(row)
     });
-    
+
+    console.log(rows)
+
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -48,9 +54,9 @@ export const CardPurchaseTable = ({ data, highlight }) => {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
             <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Amount Debited</TableCell>
-                <TableCell>Point of Sale</TableCell>
+                {fieldHeaders.map((h, i) => {
+                    return <TableCell>{h}</TableCell>
+                })}
             </TableRow>
         </TableHead>
         <TableBody>
@@ -59,15 +65,9 @@ export const CardPurchaseTable = ({ data, highlight }) => {
                 : rows
             ).map((row, i) => (
                 <TableRow key={row.date} sx={{ bgcolor: () => (row.i == highlight) ? theme.palette.secondary.main : null }}>
-                    <TableCell component="th" scope="row">
-                    {row.date.slice(0,10)}
-                    </TableCell>
-                    <TableCell>
-                    ${parseFloat(row.debitAm).toFixed(2)}
-                    </TableCell>
-                    <TableCell>
-                    {row.dest}
-                    </TableCell>
+                    {fieldHeaders.map((h, i) => {
+                        return <TableCell>{row[h]}</TableCell>
+                    })}
                 </TableRow>
             ))}
 
