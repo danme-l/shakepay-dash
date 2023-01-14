@@ -50,7 +50,8 @@ export const Rewards = ({cardPurchases, cardCashbacks, spEarn}) => {
         <Grid container spacing={1} justifyContent='center'>
             <Grid item xs={5} sx={{p: 6, mx: 1}}>
                 <Typography variant="h2">Card Purchases</Typography>
-                <CardPurchaseTable data={cardPurchases} />
+                {/* <CardPurchaseTable data={cardPurchases} /> */}
+                <CustomSPInfoTable data={cardPurchases} highlight={null} fieldHeaders={['Date', 'Amount Debited', 'Debit Currency', 'Source / Destination']} fieldIndices={[ 1, 2, 3, 9]} />
             </Grid>
             <Grid item xs={6} sx={{p: 6}} alignItems='center'>
                 <Typography variant="h6">Where you've used your card:</Typography>
@@ -74,10 +75,27 @@ export const Rewards = ({cardPurchases, cardCashbacks, spEarn}) => {
             </Grid>
             <Grid item xs={5} sx={{p: 6, mx: 1}}>
                 <Typography variant="h2">Cash back</Typography>
-                <CustomSPInfoTable data={cardCashbacks} fieldHeaders={['Date','Credit Amount', 'Spot Rate']} fieldIndices={[ 1, 4, 8]} />
+                <CustomSPInfoTable data={cardCashbacks} highlight={null} fieldHeaders={['Date','Credit Amount', 'Credit Currency', 'Spot Rate']} fieldIndices={[ 1, 4, 5, 8]} />
             </Grid>
             <Grid item xs={6}>
-                {/* <Typography variant="h2">Cash back</Typography> */}
+                <Paper elevation={3} sx={{p: 2, my: 2}}>
+                    <Typography variant='h6'>Cashback Earned</Typography>
+                    <Typography variant='body1'>
+                        {cardCashbacks.reduce((t, d) => parseFloat(d['Amount Credited'])*100000000 + t, 0)} Satoshis
+                    </Typography>
+                </Paper>
+                <Paper elevation={3} sx={{p: 2, my: 2}}>
+                    <Typography variant='h6'>Biggest Cashback - Sats</Typography>
+                    <Typography variant='body1'>
+                        {cardCashbacks.reduce((t, d) => Math.max(t, parseFloat(d['Amount Credited'])*100000000), 0)} Satoshis
+                    </Typography>
+                </Paper>
+                <Paper elevation={3} sx={{p: 2, my: 2}}>
+                    <Typography variant='h6'>Biggest Cashback - CAD</Typography>
+                    <Typography variant='body1'>
+                        ${cardCashbacks.reduce((t, d) => Math.max(t, parseFloat(d['Amount Credited'])*d['Spot Rate']), 0).toFixed(2)}
+                    </Typography>
+                </Paper>
             </Grid>           
         </Grid>
     )

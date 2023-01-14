@@ -18,23 +18,19 @@ export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    function createData(i, fields) {
-        //console.log(Object.keys(fields))
-        return {i, ...Object.keys(fields)};
-    }
-
     // create data
     const rows = [];
     data.map((d,i) => {
+        // map over each transaction 
         const v = Object.values(d);
         const row = {};
         fieldIndices.forEach((val, ind) => {
+            // set the relevant information from the transaction in the row
+            // 'val' in this case is the current integer from the field indices
             row[fieldHeaders[ind]] = v[val]
         });
         rows.push(row)
     });
-
-    console.log(rows)
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -48,6 +44,17 @@ export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices 
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    const formatCell = (row, column) => {
+        if (column === 'Date') {
+            return row[column].slice(0,10);
+        } else if (column === 'Amount Debited') {
+            return row[column];
+        } else if (column === 'Spot Rate') {
+            return "$" + parseFloat(row[column]).toFixed(2)
+        } else 
+        return row[column];
+    }
 
   return (
     <TableContainer component={Paper}>
@@ -64,9 +71,9 @@ export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices 
                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : rows
             ).map((row, i) => (
-                <TableRow key={row.date} sx={{ bgcolor: () => (row.i == highlight) ? theme.palette.secondary.main : null }}>
+                <TableRow key={row.date} sx={{ bgcolor: () => (row.i === highlight) ? theme.palette.secondary.main : null }}>
                     {fieldHeaders.map((h, i) => {
-                        return <TableCell>{row[h]}</TableCell>
+                        return <TableCell>{formatCell(row, h)}</TableCell>
                     })}
                 </TableRow>
             ))}

@@ -16,8 +16,6 @@ const StyPaper = styled(Paper)(({ theme }) => ({
   }));
 
 export const Landing = ({ userData, purchaseData, purchaseTotal, btcBuys, ethBuys, cardPurchases, cardCashbacks, spEarn }) => {
-    
-    
     if (userData) {
         return (
             <Box sx={{ flexGrow: 1, margin: 4 }}>
