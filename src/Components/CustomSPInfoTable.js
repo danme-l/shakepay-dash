@@ -8,29 +8,39 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
 import { TableHead } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { TablePaginationActions } from './Utils/TablePaginationActions';
 
 
-// this table and <TablePaginationActions /> are more or less lifted directly from the mui examples
-export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices }) => {
+// much of this taken directly from mui docs examples 
+// https://mui.com/material-ui/react-table/#custom-pagination-actions
+export const CustomSPInfoTable = ({ data, fieldHeaders, fieldIndices, btcOrEth=null, highlight=null, showBlockchain=false, calculateCadVal=false }) => {
     const theme = useTheme();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    console.log(calculateCadVal);
 
     // create data
     const rows = [];
     data.map((d,i) => {
         // map over each transaction 
         const v = Object.values(d);
-        const row = {};
+        const row = {'i': i};
         fieldIndices.forEach((val, ind) => {
             // set the relevant information from the transaction in the row
             // 'val' in this case is the current integer from the field indices
             row[fieldHeaders[ind]] = v[val]
         });
+        if (calculateCadVal) {
+            row['Reward - CAD'] = v[4] * v[8]
+        }
         rows.push(row)
     });
+
+    console.log(rows);
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -45,15 +55,47 @@ export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices 
         setPage(0);
     };
 
+    const getAddressCell = (row) => {
+        return (
+            <TableCell align='center'>
+                {row['Source / Destination']}
+                <Link href={getAddressLink(row['Source / Destination'])} target="_blank" rel="noreferrer">
+                    <Typography variant='body1'>View on Blockchain</Typography>
+                </Link>
+            </TableCell>
+        )
+    }
+
+    const getAddressLink = (addr) => {
+        return `https://www.blockchain.com/explorer/addresses/${btcOrEth}/${addr}`;
+    }
+
+    const getTransactionCell = (row) => {
+        return (
+            <TableCell align='center'>
+                {row['Blockchain Transaction ID']}
+                <Link href={getTransactionLink(row['Blockchain Transaction ID'])} target="_blank" rel="noreferrer">
+                    <Typography variant='body1'>View on Blockchain</Typography>
+                </Link>
+            </TableCell>
+        )
+    }
+
+    const getTransactionLink = (trans) => {
+        return `https://www.blockchain.com/explorer/transactions/${btcOrEth}/${trans}`;
+    }
+
     const formatCell = (row, column) => {
         if (column === 'Date') {
-            return row[column].slice(0,10);
-        } else if (column === 'Amount Debited') {
-            return row[column];
-        } else if (column === 'Spot Rate') {
-            return "$" + parseFloat(row[column]).toFixed(2)
+            return <TableCell>{row[column].slice(0,10)}</TableCell>;
+        } else if (column === 'Spot Rate' || column === 'Buy / Sell Rate' || column === 'Reward - CAD') {
+            return <TableCell>{"$" + parseFloat(row[column]).toFixed(2)}</TableCell>
+        } else if (column === 'Source / Destination' && showBlockchain) {
+            return getAddressCell(row)
+        } else if (column === 'Blockchain Transaction ID' && showBlockchain) {
+            return getTransactionCell(row)
         } else 
-        return row[column];
+        return <TableCell>{row[column]}</TableCell>
     }
 
   return (
@@ -73,7 +115,7 @@ export const CustomSPInfoTable = ({ data, highlight, fieldHeaders, fieldIndices 
             ).map((row, i) => (
                 <TableRow key={row.date} sx={{ bgcolor: () => (row.i === highlight) ? theme.palette.secondary.main : null }}>
                     {fieldHeaders.map((h, i) => {
-                        return <TableCell>{formatCell(row, h)}</TableCell>
+                        return formatCell(row, h)
                     })}
                 </TableRow>
             ))}

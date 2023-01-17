@@ -9,15 +9,15 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableHead } from '@mui/material';
-import { TablePaginationActions } from './Utils/TablePaginationActions';
+import { TablePaginationActions } from '../Utils/TablePaginationActions';
 
 
 // this table and <TablePaginationActions /> are more or less lifted directly from the mui examples
-function createData(i, date,  debitAm, dest) {
-  return {i, date,  debitAm, dest };
+function createData(i, date, debitCur, debitAm, creditCur, creditAm, buy) {
+  return {i, date, debitCur, debitAm, creditCur, creditAm, buy };
 }
 
-export const CardPurchaseTable = ({ data, highlight }) => {
+export const CryptoBuyTable = ( { data, highlight }) => {
     const theme = useTheme();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -26,10 +26,9 @@ export const CardPurchaseTable = ({ data, highlight }) => {
     const rows = [];
     data.map((d,i) => {
         const v = Object.values(d);
-        // console.log(v);
-        rows.push(createData(i, v[1],v[2],v[9]))
+        rows.push(createData(i, v[1],v[2],v[3],v[4],v[5],v[6]))
     });
-    
+
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -49,8 +48,11 @@ export const CardPurchaseTable = ({ data, highlight }) => {
         <TableHead>
             <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>Amount Debited</TableCell>
-                <TableCell>Point of Sale</TableCell>
+                <TableCell>Debit Currency</TableCell>
+                <TableCell>Amout Debited</TableCell>
+                <TableCell>Credit Currency</TableCell>
+                <TableCell>Amount Credited</TableCell>
+                <TableCell>Buy Rate</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -62,11 +64,20 @@ export const CardPurchaseTable = ({ data, highlight }) => {
                     <TableCell component="th" scope="row">
                     {row.date.slice(0,10)}
                     </TableCell>
-                    <TableCell>
-                    ${parseFloat(row.debitAm).toFixed(2)}
+                    <TableCell align="right">
+                    {row.debitAm}
                     </TableCell>
-                    <TableCell>
-                    {row.dest}
+                    <TableCell align="right">
+                    {row.debitCur}
+                    </TableCell>
+                    <TableCell align="right">
+                    {row.creditAm}
+                    </TableCell>
+                    <TableCell align="right">
+                    {row.creditCur}
+                    </TableCell>
+                    <TableCell align="right">
+                    {row.buy}
                     </TableCell>
                 </TableRow>
             ))}

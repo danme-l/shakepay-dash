@@ -8,17 +8,15 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { TableHead } from '@mui/material';
-import { TablePaginationActions } from './Utils/TablePaginationActions';
+import { TableHead, Typography } from '@mui/material';
+import { Link } from '@mui/material';
+import { TablePaginationActions } from '../Utils/TablePaginationActions';
 
-
-// this table and <TablePaginationActions /> are more or less lifted directly from the mui examples
-function createData(i, date, debitCur, debitAm, creditCur, creditAm, buy) {
-  return {i, date, debitCur, debitAm, creditCur, creditAm, buy };
+function createData(i, date, debitCur, debitAm, spot, destination, blockchainId) {
+  return {i, date, debitCur, debitAm, spot, destination, blockchainId };
 }
 
-export const CryptoBuyTable = ( { data, highlight }) => {
-    const theme = useTheme();
+export const CryptoCashoutTable = ( { data, btcOrEth }) => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -26,7 +24,7 @@ export const CryptoBuyTable = ( { data, highlight }) => {
     const rows = [];
     data.map((d,i) => {
         const v = Object.values(d);
-        rows.push(createData(i, v[1],v[2],v[3],v[4],v[5],v[6]))
+        rows.push(createData(i, v[1],v[2],v[3], v[8], v[9], v[10]))
     });
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -42,6 +40,14 @@ export const CryptoBuyTable = ( { data, highlight }) => {
         setPage(0);
     };
 
+    const getAddressLink = (addr) => {
+        return `https://www.blockchain.com/explorer/addresses/${btcOrEth}/${addr}`;
+    }
+
+    const getTransactionLink = (trans) => {
+        return `https://www.blockchain.com/explorer/transactions/${btcOrEth}/${trans}`;
+    }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -50,9 +56,9 @@ export const CryptoBuyTable = ( { data, highlight }) => {
                 <TableCell>Date</TableCell>
                 <TableCell>Debit Currency</TableCell>
                 <TableCell>Amout Debited</TableCell>
-                <TableCell>Credit Currency</TableCell>
-                <TableCell>Amount Credited</TableCell>
-                <TableCell>Buy Rate</TableCell>
+                <TableCell>Spot Rate</TableCell>
+                <TableCell>Destination</TableCell>
+                <TableCell>Blockchain Transaction ID</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -60,24 +66,30 @@ export const CryptoBuyTable = ( { data, highlight }) => {
                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : rows
             ).map((row, i) => (
-                <TableRow key={row.date} sx={{ bgcolor: () => (row.i == highlight) ? theme.palette.secondary.main : null }}>
+                <TableRow key={row.date} >
                     <TableCell component="th" scope="row">
-                    {row.date.slice(0,10)}
+                        {row.date.slice(0,10)}
                     </TableCell>
                     <TableCell align="right">
-                    {row.debitAm}
+                        {row.debitAm}
                     </TableCell>
                     <TableCell align="right">
-                    {row.debitCur}
+                        {row.debitCur}
                     </TableCell>
                     <TableCell align="right">
-                    {row.creditAm}
+                        {row.spot}
                     </TableCell>
-                    <TableCell align="right">
-                    {row.creditCur}
+                    <TableCell align="center">
+                        {row.destination}
+                        <Link href={getAddressLink(row.destination)} target="_blank" rel="noreferrer">
+                            <Typography variant='body1'>View on Blockchain</Typography>
+                        </Link>
                     </TableCell>
-                    <TableCell align="right">
-                    {row.buy}
+                    <TableCell align="center">
+                        {row.blockchainId}
+                        <Link href={getTransactionLink(row.blockchainId)} target="_blank" rel="noreferrer">
+                            <Typography variant='body1'>View on Blockchain</Typography>
+                        </Link>
                     </TableCell>
                 </TableRow>
             ))}

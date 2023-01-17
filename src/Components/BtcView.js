@@ -7,9 +7,10 @@ import { Link } from '@mui/material';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { FaBitcoin} from 'react-icons/fa';
 import { Grid } from '@mui/material'
-import { CryptoBuyTable } from './CryptoBuyTable';
+import { CryptoBuyTable } from './Deprecated/CryptoBuyTable';
+import { CustomSPInfoTable } from './CustomSPInfoTable';
 import { CryptoBuyChart } from './CryptoBuyChart';
-import { CryptoCashoutTable } from './CryptoCashoutTable';
+import { CryptoCashoutTable } from './Deprecated/CryptoCashoutTable';
 
 export const BtcView = ( {btcBuys, btcCashouts} ) => {
     const [firstBuy, setFirstBuy] = useState(btcBuys[0]['Date'].slice(0,10));
@@ -68,11 +69,22 @@ export const BtcView = ( {btcBuys, btcCashouts} ) => {
                 </Grid>
                 <Grid item xs={5}>
                     <Typography variant='h4'>BTC Buys</Typography>
-                    <CryptoBuyTable data={btcBuys} highlight={highlight} />
+                    <CustomSPInfoTable 
+                        data={btcBuys} 
+                        highlight={highlight} 
+                        fieldHeaders={['Date','Debit Amount', 'Debit Currency', 'Credit Amount', 'Credit Currency', 'Buy / Sell Rate']} 
+                        fieldIndices={[ 1, 2, 3, 4, 5, 6]}
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='h4'>BTC Cashouts to Wallet</Typography>
-                    <CryptoCashoutTable data={btcCashouts} highlight={highlight} btcOrEth='btc' />
+                    <CustomSPInfoTable 
+                        data={btcCashouts} 
+                        fieldHeaders={['Date','Debit Amount', 'Debit Currency', 'Spot Rate', 'Source / Destination', 'Blockchain Transaction ID']} 
+                        fieldIndices={[ 1, 2, 3, 8, 9, 10]}
+                        btcOrEth={'btc'}
+                        showBlockchain={true}
+                    />
                 </Grid>
             </Grid>          
         </Box>

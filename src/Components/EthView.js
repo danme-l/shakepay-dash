@@ -7,9 +7,9 @@ import { Link } from '@mui/material';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { FaEthereum } from 'react-icons/fa';
 import { Grid } from '@mui/material'
-import { CryptoBuyTable } from './CryptoBuyTable';
+import { CustomSPInfoTable } from './CustomSPInfoTable';
 import { CryptoBuyChart } from './CryptoBuyChart';
-import { CryptoCashoutTable } from './CryptoCashoutTable';
+import { CryptoCashoutTable } from './Deprecated/CryptoCashoutTable';
 
 export const EthView = ( {ethBuys, ethCashouts} ) => {
     const [firstBuy, setFirstBuy] = useState(ethBuys[0]['Date'].slice(0,10));
@@ -70,11 +70,23 @@ export const EthView = ( {ethBuys, ethCashouts} ) => {
                 </Grid>
                 <Grid item xs={5}>
                     <Typography variant='h4'>ETH Buys</Typography>
-                    <CryptoBuyTable data={ethBuys} highlight={highlight} />
+                    <CustomSPInfoTable 
+                        data={ethBuys} 
+                        highlight={highlight} 
+                        // date, debitCur, debitAm, creditCur, creditAm, buy
+                        fieldHeaders={['Date','Debit Amount', 'Debit Currency', 'Credit Amount', 'Credit Currency', 'Buy / Sell Rate']} 
+                        fieldIndices={[ 1, 2, 3, 4, 5, 6]}
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='h4'>ETH Cashouts to Wallet</Typography>
-                    <CryptoCashoutTable data={ethCashouts} highlight={highlight} btcOrEth='eth' />
+                    <CustomSPInfoTable 
+                        data={ethCashouts} 
+                        fieldHeaders={['Date','Debit Amount', 'Debit Currency', 'Spot Rate', 'Source / Destination', 'Blockchain Transaction ID']} 
+                        fieldIndices={[ 1, 2, 3, 8, 9, 10]}
+                        btcOrEth={'eth'}
+                        showBlockchain={true}
+                    />
                 </Grid>
             </Grid>          
         </Box>

@@ -8,15 +8,17 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { TableHead, Typography } from '@mui/material';
-import { Link } from '@mui/material';
-import { TablePaginationActions } from './Utils/TablePaginationActions';
+import { TableHead } from '@mui/material';
+import { TablePaginationActions } from '../Utils/TablePaginationActions';
 
-function createData(i, date, debitCur, debitAm, spot, destination, blockchainId) {
-  return {i, date, debitCur, debitAm, spot, destination, blockchainId };
+
+// this table and <TablePaginationActions /> are more or less lifted directly from the mui examples
+function createData(i, date,  debitAm, dest) {
+  return {i, date,  debitAm, dest };
 }
 
-export const CryptoCashoutTable = ( { data, btcOrEth }) => {
+export const CardPurchaseTable = ({ data, highlight }) => {
+    const theme = useTheme();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -24,9 +26,10 @@ export const CryptoCashoutTable = ( { data, btcOrEth }) => {
     const rows = [];
     data.map((d,i) => {
         const v = Object.values(d);
-        rows.push(createData(i, v[1],v[2],v[3], v[8], v[9], v[10]))
+        // console.log(v);
+        rows.push(createData(i, v[1],v[2],v[9]))
     });
-
+    
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -40,25 +43,14 @@ export const CryptoCashoutTable = ( { data, btcOrEth }) => {
         setPage(0);
     };
 
-    const getAddressLink = (addr) => {
-        return `https://www.blockchain.com/explorer/addresses/${btcOrEth}/${addr}`;
-    }
-
-    const getTransactionLink = (trans) => {
-        return `https://www.blockchain.com/explorer/transactions/${btcOrEth}/${trans}`;
-    }
-
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
             <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>Debit Currency</TableCell>
-                <TableCell>Amout Debited</TableCell>
-                <TableCell>Spot Rate</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Blockchain Transaction ID</TableCell>
+                <TableCell>Amount Debited</TableCell>
+                <TableCell>Point of Sale</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -66,30 +58,15 @@ export const CryptoCashoutTable = ( { data, btcOrEth }) => {
                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : rows
             ).map((row, i) => (
-                <TableRow key={row.date} >
+                <TableRow key={row.date} sx={{ bgcolor: () => (row.i == highlight) ? theme.palette.secondary.main : null }}>
                     <TableCell component="th" scope="row">
-                        {row.date.slice(0,10)}
+                    {row.date.slice(0,10)}
                     </TableCell>
-                    <TableCell align="right">
-                        {row.debitAm}
+                    <TableCell>
+                    ${parseFloat(row.debitAm).toFixed(2)}
                     </TableCell>
-                    <TableCell align="right">
-                        {row.debitCur}
-                    </TableCell>
-                    <TableCell align="right">
-                        {row.spot}
-                    </TableCell>
-                    <TableCell align="center">
-                        {row.destination}
-                        <Link href={getAddressLink(row.destination)} target="_blank" rel="noreferrer">
-                            <Typography variant='body1'>View on Blockchain</Typography>
-                        </Link>
-                    </TableCell>
-                    <TableCell align="center">
-                        {row.blockchainId}
-                        <Link href={getTransactionLink(row.blockchainId)} target="_blank" rel="noreferrer">
-                            <Typography variant='body1'>View on Blockchain</Typography>
-                        </Link>
+                    <TableCell>
+                    {row.dest}
                     </TableCell>
                 </TableRow>
             ))}

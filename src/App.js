@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { CustomDataGrid } from './Components/CustomDataGrid';
-import { NavBar } from './Components/TopBar';
+import { NavBar } from './Components/NavBar';
 import { About } from './Components/About';
 import { FileInput } from './Components/FileInput';
 import { Landing } from './Components/Landing';
