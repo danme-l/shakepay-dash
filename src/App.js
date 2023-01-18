@@ -47,7 +47,8 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<BrowserRouter>
 				<NavBar />
-				{/* Conditionally render the input such that it'll disappear once the file is uploaded and switch to app content*/}
+				{/* Conditionally render the input and info box such that it'll 
+				disappear once the file is uploaded and switch to app content*/}
 				{!parsedData
 					&& <FileInput setParsedData={setParsedData} setTableRows={setTableRows} setValues={setValues} />}
 				{!parsedData
@@ -58,6 +59,7 @@ function App() {
 								See the <Link to='/about'>about page</Link> for more details.
 								</Typography>
 						</Paper>}
+				{/* Routes activate once the user has uploaded their data */}
 				{parsedData && 
 					<Routes>
 						<Route index name='home' path='/' element={<Landing 

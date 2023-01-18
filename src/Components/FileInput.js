@@ -57,10 +57,6 @@ export const FileInput = (props) => {
                     onChange={handleFileInput}
                     />
                 </form>
-                {/* TODO */}
-                {/* <Button>
-                    Where do I find this?
-                </Button> */}
             </Paper>
         </Box>
     )

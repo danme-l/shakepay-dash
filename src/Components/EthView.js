@@ -26,6 +26,7 @@ export const EthView = ( {ethBuys, ethCashouts} ) => {
     }, []);
 
     const highlightBuy = (i) => {
+        // i = row index to highlight
         highlight !== i ? setHighlight(i) : setHighlight(-1);
         return;
     }
@@ -33,6 +34,7 @@ export const EthView = ( {ethBuys, ethCashouts} ) => {
     return (
         <Box  sx={{ flexGrow: 1, margin: 4 }}>
             <Grid container spacing={5} direction="row" justifyContent={'space-evenly'}>
+                {/* GRID UPPER ROW - header and info box */}
                 <Grid item xs={6}>
                     <Typography variant='h1' >Ether <FaEthereum /> </Typography>
                 </Grid>
@@ -58,6 +60,8 @@ export const EthView = ( {ethBuys, ethCashouts} ) => {
                         </ul>
                     </Paper>
                 </Grid>
+                {/* END GRID UPPER ROW */}
+                {/* GRID SECOND ROW - time series chart & purchases table */}
                 <Grid item xs={7}>
                     {/* TODO implement skip to the right table page on chart ref dot click */}
                     <CryptoBuyChart 
@@ -73,11 +77,12 @@ export const EthView = ( {ethBuys, ethCashouts} ) => {
                     <CustomSPInfoTable 
                         data={ethBuys} 
                         highlight={highlight} 
-                        // date, debitCur, debitAm, creditCur, creditAm, buy
                         fieldHeaders={['Date','Debit Amount', 'Debit Currency', 'Credit Amount', 'Credit Currency', 'Buy / Sell Rate']} 
                         fieldIndices={[ 1, 2, 3, 4, 5, 6]}
                     />
                 </Grid>
+                {/* END GRID SECOND ROW */}
+                {/* GRID THIRD ROW - cashouts table */}
                 <Grid item xs={12}>
                     <Typography variant='h4'>ETH Cashouts to Wallet</Typography>
                     <CustomSPInfoTable 

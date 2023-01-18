@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { TransModal } from './TransModal';
 
 function createData(id, transType, date, debitAm, debitCur, creditAm, creditCur, buyRate, dir, spotRate, sourceDest, blockchainID) {
+    // utility function to map over array of objects to create the rows array 
     date = date.slice(0,10); // fix the date
     if (spotRate) {
         spotRate = "$" + parseFloat(spotRate).toFixed(2);
@@ -85,12 +86,15 @@ const columns = [
 ]
 
 export const CustomDataGrid = ({ data }) => {
+    // eslint-disable-next-line
     const [page, setPage] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState(null);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    // Modal pops up on row click, containing data from that row
     const handleModalOpen = (trans) => {
+        // trans = transaction data from the row
         setModalContent(trans);
         setModalOpen(true)
     };
@@ -117,6 +121,7 @@ export const CustomDataGrid = ({ data }) => {
                 modalContent={modalContent}
                 setModalContent={setModalContent}
             />
+            {/* Data Grid component: https://mui.com/x/react-data-grid/ */}
             <DataGrid
                 rows={rows} rowHeight={60}
                 columns={columns}

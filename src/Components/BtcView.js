@@ -7,10 +7,8 @@ import { Link } from '@mui/material';
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { FaBitcoin} from 'react-icons/fa';
 import { Grid } from '@mui/material'
-import { CryptoBuyTable } from './Deprecated/CryptoBuyTable';
 import { CustomSPInfoTable } from './CustomSPInfoTable';
 import { CryptoBuyChart } from './CryptoBuyChart';
-import { CryptoCashoutTable } from './Deprecated/CryptoCashoutTable';
 
 export const BtcView = ( {btcBuys, btcCashouts} ) => {
     const [firstBuy, setFirstBuy] = useState(btcBuys[0]['Date'].slice(0,10));
@@ -27,6 +25,7 @@ export const BtcView = ( {btcBuys, btcCashouts} ) => {
     }, []);
 
     const highlightBuy = (i) => {
+        // i = row index to highlight
         highlight !== i ? setHighlight(i) : setHighlight(-1);
         return;
     }
@@ -34,6 +33,7 @@ export const BtcView = ( {btcBuys, btcCashouts} ) => {
     return (
         <Box  sx={{ flexGrow: 1, margin: 4 }}>
             <Grid container spacing={5} direction="row" justifyContent={'space-evenly'}>
+                {/* GRID UPPER ROW - header and info box */}
                 <Grid item xs={6}>
                     <Typography variant='h1' >Bitcoin <FaBitcoin/> </Typography>
                 </Grid>
@@ -41,7 +41,7 @@ export const BtcView = ( {btcBuys, btcCashouts} ) => {
                     <Paper elevation={3} sx={{padding:3}} >
                         <Typography variant='body1'>
                             Bitcoin is an open-source, uncensorable, decentralized, peer-to-peer payment system, 
-                            invented anonymously by one Satoshi Nakomoto. 
+                            invented anonymously by Satoshi Nakomoto, who's identity remains a mystery. 
                         </Typography>
                         <ul>
                             <li>
@@ -57,6 +57,8 @@ export const BtcView = ( {btcBuys, btcCashouts} ) => {
                         </ul>
                     </Paper>
                 </Grid>
+                {/* END GRID UPPER ROW */}
+                {/* GRID SECOND ROW - time series chart & purchases table */}
                 <Grid item xs={7}>
                     {/* TODO implement skip to the right table page on chart ref dot click */}
                     <CryptoBuyChart 
@@ -76,6 +78,8 @@ export const BtcView = ( {btcBuys, btcCashouts} ) => {
                         fieldIndices={[ 1, 2, 3, 4, 5, 6]}
                     />
                 </Grid>
+                {/* END GRID SECOND ROW */}
+                {/* GRID THIRD ROW - cashouts table */}
                 <Grid item xs={12}>
                     <Typography variant='h4'>BTC Cashouts to Wallet</Typography>
                     <CustomSPInfoTable 

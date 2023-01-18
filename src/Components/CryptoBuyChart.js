@@ -18,11 +18,11 @@ const CustomTooltip = ({ active, payload, btcOrEth}) => {
         )
     };
     return null;        
-  }
+}
 
-  // chart that overlays the user's purchase of btc/eth to the price 
-  // user can click on the reference dot of their purchase and highlight 
-  // it on their purchase table ( <CryptoBuyTable /> component)
+// chart that overlays the user's purchase of btc/eth to the price 
+// user can click on the reference dot of their purchase and highlight 
+// it on their purchase table ( <CryptoBuyTable /> component)
 export const CryptoBuyChart = ({ priceData, buysData, mouseOverDot, setMouseOverDot, highlightBuy, btcOrEth}) => {
     return (
         <ResponsiveContainer width={'99%'} height={600}>
