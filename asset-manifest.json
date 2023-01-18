@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/shakepay-dash/static/js/main.57857756.js",
+    "main.js": "/shakepay-dash/static/js/main.a016934a.js",
     "index.html": "/shakepay-dash/index.html",
-    "main.57857756.js.map": "/shakepay-dash/static/js/main.57857756.js.map"
+    "main.a016934a.js.map": "/shakepay-dash/static/js/main.a016934a.js.map"
   },
   "entrypoints": [
-    "static/js/main.57857756.js"
+    "static/js/main.a016934a.js"
   ]
 }
